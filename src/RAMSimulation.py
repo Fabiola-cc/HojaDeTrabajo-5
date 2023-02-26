@@ -1,23 +1,47 @@
 
 import simpy 
+import random 
+import statistics 
 
-class RAMSimuation:
+def Processqty(env, nameProcess, RAM, timeProcess, amountProcess):
+    global totalTimeProcess, start
+
+    interval = 10
+    timeProcess = random.expovariate(1.0 / interval) # ciclos de reloj 
+
+    amountProcess = random.randint(1,10)
+
+    # entra por ciclo de reloj 
+    yield env.timeout(timeProcess)
+    print("El programa: %a necesita la una cantidad total de %b de RAM para realizar proceso" (nameProcess, amountProcess))
+
+    start = env.now 
+
+    # suspende el proceso si no puede ingresar a RAM
+    yield RAM.get(amountProcess)
+    print("El programa: %a puede hacer uso de %b de la cantitdad total de RAM" (nameProcess, amountProcess))
     
-    def __init__(self, env, capacity): 
-        self.env = env
-        self.capacidad = capacity
-        self.memoria = simpy.Container(env, capacity = capacity, init = 0) 
+    totalInstructions = random.randint(1,10)
 
-    def escribirRAM(self, value, directionMemory): 
-        yield self.memory.put(value)
+    CPUtotalInstructions = 3 
 
-        print("El valor" + value + "ha sido colocado en la direccion " + directionMemory)
+    while CPUtotalInstructions < totalInstructions: 
+        
+        yield (CPU.request()) # pregunta al CPU si se puede ejectuar, si no, queda en cola de espera
+# ----------------------------------------------------------------
 
-    def leerRAM(self, direccion): 
-        valueinRAM = yield self.memory.get() 
+env = simpy.Environment()
 
+RAM = simpy.Container(env, init=100, capacity=100) # contenedor de RAM 
+CPU = simpy.Resource(env, capacity=1) # capacidad de CPU 
+random.seed(10) # fijar inicio de random 
 
-    env = simpy.Environment()
+totalTimeProcess = env.now - start #tiempo total del proceso 
 
-    newRAM = RAMSimuation(env, capacity = 25)
+averageTime = statistics.mean(totalTimeProcess) # tiempo promedio 
+sdv = statistics.stdev(totalTimeProcess) # desviacion estandar 
+
+print("El tiempo promedio total fue de: ", averageTime)
+print("La desviacion estandar del proceso fue de: ", sdv)
+
 
