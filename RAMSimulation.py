@@ -60,7 +60,7 @@ def Processqty(env, nameProcess, RAM, timeProcess, amountProcess, totalInstructi
 
 env = simpy.Environment()
 
-totalProcess = 100 # cantidad inicial de procesos 
+totalProcess = 50 # cantidad inicial de procesos 
 
 start = 0 
 arrayTime = []
