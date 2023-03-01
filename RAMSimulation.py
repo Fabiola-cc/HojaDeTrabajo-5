@@ -60,20 +60,21 @@ def Processqty(env, nameProcess, RAM, timeProcess, amountProcess, totalInstructi
 
 env = simpy.Environment()
 
-totalProcess = 50 # cantidad inicial de procesos 
+totalProcess = 200 # cantidad inicial de procesos 
+
 
 start = 0 
 arrayTime = []
 totalTime = 0 
 
 RAM = simpy.Container(env, init=100, capacity=100) # contenedor de RAM 
-CPU1 = simpy.Resource(env, capacity=1) # capacidad de CPU 
+CPU1 = simpy.Resource(env, capacity=2) # capacidad de CPU 
 Wait = simpy.Resource(env, capacity=1) # guarda las instrucciones 
 
 random.seed(10) # fijar inicio de random 
 
 for i in range(totalProcess): #cantidad de procesos, cambiar por procesos  
-    timeProcess = random.expovariate(1.0 / 10) # ciclos de reloj
+    timeProcess = random.expovariate(1/ 1) # ciclos de reloj
     amountProcess = random.randint(1,10)
     totalInstructions = random.randint(1,10)
 
@@ -88,4 +89,3 @@ print("\nInformación obtenida de la RAM: ")
 
 print("\tEl tiempo promedio fue de: ", averageProcess)
 print ("\tLa desviacion estandar de los tiempos es: ", sdv )
-
